@@ -44,17 +44,17 @@ for opera in ${OPERA_VERSIONS[@]}; do
   echo "Doing $opera"
   EXECUTABLE=$(command -v "$opera")
 
-  readonly OPERA_DIR=$(dirname $(readlink -f $EXECUTABLE))
-  readonly OPERA_LIB_DIR="$OPERA_DIR/lib_extra"
-  readonly OPERA_WIDEVINE_DIR="$OPERA_LIB_DIR/WidevineCdm"
-  readonly OPERA_WIDEVINE_SO_DIR="$OPERA_WIDEVINE_DIR/_platform_specific/linux_x64"
-  readonly OPERA_WIDEVINE_CONFIG="$OPERA_DIR/resources/widevine_config.json"
+  OPERA_DIR=$(dirname $(readlink -f $EXECUTABLE))
+  OPERA_LIB_DIR="$OPERA_DIR/lib_extra"
+  OPERA_WIDEVINE_DIR="$OPERA_LIB_DIR/WidevineCdm"
+  OPERA_WIDEVINE_SO_DIR="$OPERA_WIDEVINE_DIR/_platform_specific/linux_x64"
+  OPERA_WIDEVINE_CONFIG="$OPERA_DIR/resources/widevine_config.json"
 
   #Getting download links
   printf 'Getting download links...\n'
   ##ffmpeg
-  readonly FFMPEG_URL_MAIN=$(wget -q4O - $FFMPEG_SRC_MAIN | grep browser_download_url | cut -d '"' -f 4 | grep linux-x64 | head -n 1)
-  readonly FFMPEG_URL_ALT=$(wget -q4O - $FFMPEG_SRC_ALT | grep browser_download_url | cut -d '"' -f 4 | grep linux-x64 | head -n 1)
+  FFMPEG_URL_MAIN=$(wget -q4O - $FFMPEG_SRC_MAIN | grep browser_download_url | cut -d '"' -f 4 | grep linux-x64 | head -n 1)
+  FFMPEG_URL_ALT=$(wget -q4O - $FFMPEG_SRC_ALT | grep browser_download_url | cut -d '"' -f 4 | grep linux-x64 | head -n 1)
   [[ $(basename $FFMPEG_URL_ALT) < $(basename $FFMPEG_URL_MAIN) ]] && readonly FFMPEG_URL=$FFMPEG_URL_MAIN || readonly FFMPEG_URL=$FFMPEG_URL_ALT
   if [[ -z $FFMPEG_URL ]]; then
     printf 'Failed to get ffmpeg download URL. Exiting...\n'
@@ -63,8 +63,8 @@ for opera in ${OPERA_VERSIONS[@]}; do
 
   ##Widevine
   if $FIX_WIDEVINE; then
-    readonly WIDEVINE_LATEST=`wget -q4O - $WIDEVINE_VERSIONS | tail -n1`
-    readonly WIDEVINE_URL="https://dl.google.com/widevine-cdm/$WIDEVINE_LATEST-linux-x64.zip"
+    WIDEVINE_LATEST=`wget -q4O - $WIDEVINE_VERSIONS | tail -n1`
+    WIDEVINE_URL="https://dl.google.com/widevine-cdm/$WIDEVINE_LATEST-linux-x64.zip"
   fi
 
   #Downloading files
